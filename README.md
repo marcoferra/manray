@@ -22,3 +22,6 @@ filename_input ="beautiful.jpg"
 filename_output = filename_input + "_output.jpg"
 text = "Beauty"
 ```
+
+Examples
+[Link Text](https://github.com/marcoferra/manray/wiki/Usage-and-examples)
