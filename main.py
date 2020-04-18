@@ -124,25 +124,26 @@ def put_text(img, text, loops, text_range=(0.3, 0.7)):
 
     print("OK")
 
-def put_randomly_text(img, text, colors, text_range=(0.3, 0.7)):
+def put_randomly_text(img, text, colors, loops, text_range=(0.3, 0.7)):
 
     height, width, depth = img.shape
     #font = cv2.FONT_HERSHEY_SIMPLEX
 
+
     for c in colors:
+        for j in range(0, loops):
+            x = random.randint(0, width-1)
+            y = random.randint(0, height-1)
 
-        x = random.randint(0, width-1)
-        y = random.randint(0, height-1)
+            blue = c[0]
+            red = c[1]
+            green = c[2]
+            color = (blue, red, green)
 
-        blue = c[0]
-        red = c[1]
-        green = c[2]
-        color = (blue, red, green)
+            text_size = random.uniform(text_range[0], text_range[1])
 
-        text_size = random.uniform(text_range[0], text_range[1])
-
-        #cv2.putText(img, text , (x, y), font, text_size, color, 1, cv2.LINE_AA)
-        paint_text(img, text, x, y, text_size, color)
+            #cv2.putText(img, text , (x, y), font, text_size, color, 1, cv2.LINE_AA)
+            paint_text(img, text, x, y, text_size, color)
 
 def do_job(input_file, input_text):
     print("Starting job")
@@ -156,8 +157,7 @@ def do_job(input_file, input_text):
 
     height, width, depth = img.shape
 
-    loops = int((height + width) * 2)
-    print("height: {0}, width: {1}, loops: {2}".format(height, width, loops))
+    print("height: {0}, width: {1}, depth {2}".format(height, width, depth))
 
     print("Getting dominant colors")
     x_start = int(width * 0.20)
@@ -171,20 +171,21 @@ def do_job(input_file, input_text):
 
     print("Blurring")
     ksize = (50, 50) 
-    img = cv2.blur(img, ksize)  
+    #img = cv2.blur(img, ksize)  
 
     print("First loop")
     text_range=(0.3, 0.7)
+    loops = int((height + width)) * 2
     put_text(img, text, loops, text_range)
 
     print("Second loop")
-    text_range=(0.3, 4.7)
+    text_range=(0.3, 1.7)
     loops = int(loops / 2)
     put_text(img, text, loops, text_range)
 
     print("Painting text with dominant colors")
     text_range=(1.3, 2.7)
-    put_randomly_text(img, text, dominant_colors, text_range)
+    #put_randomly_text(img, text, dominant_colors, 1, text_range)
 
     print("Blurring again")
     ksize = (3, 3) 
