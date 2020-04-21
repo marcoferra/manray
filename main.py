@@ -1,15 +1,22 @@
+import os
 from argparse import ArgumentParser
 
 from utils import * 
+from audio import * 
 
 def do_job(input_file, input_text):
     print("Starting job")
     
     filename_input = input_file
-    filename_output = filename_input + "_output.jpg"
+    dir_name=os.path.dirname(filename_input)
+    base_filename=os.path.splitext(os.path.basename(filename_input))[0] + '_output.jpg'
+    filename_output = os.path.join(dir_name,base_filename)
     filename_cropped = filename_input + "_cropped.jpg"
 
+    print("Output: {0}".format(filename_output))
+
     text = input_text
+    
     img = cv2.imread(filename_input) 
 
     height, width, depth = img.shape
@@ -56,6 +63,7 @@ parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="inputFile", help="Open specified file")
 parser.add_argument("-t", "--text", dest="inputText", help="Text to put on the image")
 parser.add_argument("-tf", "--text-file", dest="inputTextFile", help="Text file with text to put on the image")
+parser.add_argument("-v", "--voice", dest="inputSTT", action="store_true", help="Use sst", default='False')
 
 args = parser.parse_args()
 input_file = args.inputFile
@@ -64,6 +72,11 @@ if(args.inputText):
 
 if(args.inputTextFile):
     input_text = read_file(args.inputTextFile)
+
+
+if(args.inputSTT == True):
+    input_text = stt()
+    
 
 print('Doing job on file:{0} with this text: {1}'.format(input_file,input_text))
 
