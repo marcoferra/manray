@@ -1,29 +1,29 @@
 $(function() {
-    console.log( "ready!" );
+    console.log( "readsssy!" );
 
-    $( "#fileInput" ).change(function() {
-        var fileToUpload = $('#fileInput').prop('files')[0];
-
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#imageSrc').attr('src', e.target.result);
+    $("#uploadForm").submit(function(event){
+        console.log("Submitting");
+        event.preventDefault();
+    
+        var formData = new FormData($(this)[0]);
+    
+        $.ajax({
+        url: '/add',
+        type: 'POST',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (returndata) {
+            
+            imageSrc.src = returndata.filePath;
+            console.log(returndata);
         }
-        reader.readAsDataURL(fileToUpload);
-
+        });
+    
+        return false;
     });
-
-   
-    $("#imageSrc").on('load', function() { 
-        console.log("image loaded correctly"); 
-
-        var imgElement = $('#imageSrc').get(0);
-
-        let image = cv.imread(imgElement);
-        cv.imshow('imageCanvas', image);
-        image.delete();
-    })
-    .on('error', function() { console.log("error loading image"); });
-
 })
 
 
