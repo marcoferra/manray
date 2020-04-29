@@ -18,7 +18,7 @@ def get_dominant_color(image, k=4, image_processing_size = None):
     this resizing can be done with the image_processing_size param 
     which takes a tuple of image dims as input
 
-    >>> get_dominant_color(my_image, k=4, image_processing_size = (25, 25))
+     get_dominant_color(my_image, k=4, image_processing_size = (25, 25))
     [56.2423442, 34.0834233, 70.1234123]
     """
     #resize image if new dims provided
@@ -127,20 +127,20 @@ def put_randomly_text(img, text, colors, text_range=(0.3, 0.7)):
     height, width, depth = img.shape
     #font = cv2.FONT_HERSHEY_SIMPLEX
 
-    for c in colors:
+    for n in range(0, 5):
+        for c in colors:
 
-        x = random.randint(0, width-1)
-        y = random.randint(0, height-1)
+            x = random.randint(0, width-1)
+            y = random.randint(0, height-1)
 
-        blue = c[0]
-        red = c[1]
-        green = c[2]
-        color = (blue, red, green)
+            blue = c[0]
+            red = c[1]
+            green = c[2]
+            color = (blue, red, green)
 
-        text_size = random.uniform(text_range[0], text_range[1])
+            text_size = random.uniform(text_range[0], text_range[1])
 
-        #cv2.putText(img, text , (x, y), font, text_size, color, 1, cv2.LINE_AA)
-        paint_text(img, text, x, y, text_size, color)
+            paint_text(img, text, x, y, text_size, color)
 
 
 def do_job(img, text, params):
@@ -183,6 +183,58 @@ def do_job(img, text, params):
     max_font = params["third_loop"]["max_font"]
     text_range=(min_font, max_font)
     #text_range=(1.3, 2.7)
+    print(dominant_colors)
+    put_randomly_text(img, text, dominant_colors, text_range)
+
+    print("Blurring again")
+    ksize = (3, 3) 
+    img = cv2.blur(img, ksize) 
+
+    return img
+
+
+
+def do_job_c(img, text, params):
+
+    height, width, depth = img.shape
+
+    loops = int((height + width) * 2)
+    print("height: {0}, width: {1}, loops: {2}".format(height, width, loops))
+
+    print("Getting dominant colors")
+    x_start = int(width * 0.20)
+    x_end = int(width * 0.8)
+    y_start = int(height * 0.30)
+    y_end = int(height * 0.80)
+
+    img_no_border = img[y_start:y_end, x_start:x_end]
+    #cv2.imwrite(filename_cropped, img_no_border)
+    dominant_colors = get_dominant_color(img_no_border)
+
+    print("Blurring")
+    ksize = (50, 50) 
+    img = cv2.blur(img, ksize)  
+
+    print("First loop")
+    min_font = params["first_loop"]["min_font"]
+    max_font = params["first_loop"]["max_font"]
+    text_range=(min_font, max_font)
+    put_text(img, text, loops, text_range)
+
+    print("Second loop")
+    min_font = params["second_loop"]["min_font"]
+    max_font = params["second_loop"]["max_font"]
+    text_range=(min_font, max_font)
+    #text_range=(0.3, 2.7)
+    loops = int(loops / 2)
+    put_text(img, text, loops, text_range)
+
+    print("Painting text with dominant colors")
+    min_font = params["third_loop"]["min_font"]
+    max_font = params["third_loop"]["max_font"]
+    text_range=(min_font, max_font)
+    #text_range=(1.3, 2.7)
+    print(dominant_colors)
     put_randomly_text(img, text, dominant_colors, text_range)
 
     print("Blurring again")

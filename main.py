@@ -30,7 +30,7 @@ def main(input_file, input_text):
         },
         'third_loop' : {
             'min_font' : 1.3,
-            'max_font' : 2.7
+            'max_font' : 4.7
         }
     } 
     
