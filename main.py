@@ -20,7 +20,7 @@ def main(input_file, input_text, input_params):
             'max_font' : 0.7
         },
         'second_loop' : {
-            'min_font' : 0.3,
+            'min_font' : 1.3,
             'max_font' : 2.7
         },
         'third_loop' : {
