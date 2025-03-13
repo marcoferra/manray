@@ -186,6 +186,7 @@ def do_job(img, text, params):
 
     print("Blurring")
     ksize = (50, 50) 
+    ksize = (10, 10) 
     img = cv2.blur(img, ksize)  
 
     print("First loop")
@@ -198,7 +199,6 @@ def do_job(img, text, params):
     min_font = params["second_loop"]["min_font"]
     max_font = params["second_loop"]["max_font"]
     text_range=(min_font, max_font)
-    #text_range=(0.3, 2.7)
     loops = int(loops / 2)
     put_text(img, text, loops, text_range)
 
@@ -206,7 +206,6 @@ def do_job(img, text, params):
     min_font = params["third_loop"]["min_font"]
     max_font = params["third_loop"]["max_font"]
     text_range=(min_font, max_font)
-    #text_range=(1.3, 2.7)
     print(dominant_colors)
     put_randomly_text(img, text, dominant_colors, text_range)
 

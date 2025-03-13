@@ -1,6 +1,7 @@
 joblib
 numpy
-opencv-python==4.5.4.60
+opencv-python
 scikit-learn
 scipy
 flask
+matplotlib
