@@ -67,6 +67,22 @@ def get_image(img, input_text, input_params):
         }
     } 
 
+    '''
+    # params = {
+        'first_loop' : {
+            'min_font' : 0.1 * scale_factor,
+            'max_font' : 0.2 * scale_factor
+        },
+        'second_loop' : {
+            'min_font' : 0.4 * scale_factor,
+            'max_font' : 1.5 * scale_factor
+        },
+        'third_loop' : {
+            'min_font' : 1.2 * scale_factor,
+            'max_font' : 1.3 * scale_factor
+        }
+    }
+    '''
 
     # Stampa dei parametri
     print("Paramtri per il testo:")
